@@ -19,8 +19,8 @@ gem 'protected_attributes'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'
-  gem 'rspec-rails', '2.11.0'
-  gem 'guard-rspec', '1.2.1'
+  gem 'rspec-rails', '2.13.1'
+  gem 'guard-rspec', '2.5.0'
   gem 'guard-spork', '1.2.0'  
   gem 'childprocess', '0.3.6'
   gem 'spork', '0.9.2'
@@ -34,7 +34,7 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.1.0'
   gem 'cucumber-rails', '1.2.1', :require => false
   gem 'database_cleaner', '0.7.0'

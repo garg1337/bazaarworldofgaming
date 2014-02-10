@@ -4,7 +4,7 @@ require 'timeout'
 require 'restclient'
 
 
-class StringHelper
+module StringHelper
     
   def self.sanitize_title(title)
       escape_for_space_characters = Regexp.escape('\\+-&|!(){}[]^~*?:&')
@@ -19,7 +19,6 @@ class StringHelper
   	str = str.downcase
 
   	str = str.squish
-
   end
 
 

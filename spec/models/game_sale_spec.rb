@@ -8,4 +8,30 @@ describe GameSale do
   it { should respond_to(:saleamt)}
   it { should respond_to(:store)}
   it { should be_valid }
+
+  describe "missing url" do 
+    before {@game_sale.url = " "}
+    it { should_not be_valid }
+  end
+
+  describe "missing occurrence" do 
+    before {@game_sale.occurrence = nil}
+    it { should_not be_valid }
+  end
+
+  describe "missing store" do 
+    before {@game_sale.store = " "}
+    it { should_not be_valid }
+  end
+
+  describe "missing orig cost" do 
+    before {@game_sale.origamt = nil}
+    it { should_not be_valid }
+  end
+
+  describe "missing sale cost" do 
+    before {@game_sale.saleamt = nil}
+    it { should_not be_valid }
+  end
+
 end

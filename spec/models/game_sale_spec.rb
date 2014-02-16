@@ -9,6 +9,13 @@ describe GameSale do
   it { should respond_to(:store)}
   it { should be_valid }
 
+
+  it "should not be associated with more than one game" do
+    game2 = FactoryGirl.create(:game)
+    @game_sale.game = game2
+    expect(game2.game_sales.include?(@game_sale)).to be_false
+  end
+
   describe "missing url" do 
     before {@game_sale.url = " "}
     it { should_not be_valid }

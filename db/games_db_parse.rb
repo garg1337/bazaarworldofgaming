@@ -45,7 +45,8 @@ def get_game_genre(url)
 end
 
 def game_exists_in_db?(title, platform)
-	test = Game.where("title = ? AND platform = ?", title, platform).first
+	puts "Checking DB..."
+	test = Game.where("title = ?", title).first
 	if test != nil
 		puts("Game already in")
 		return true
@@ -56,6 +57,9 @@ end
 def fetch_game_info(gameid)
 	result = {}
 	game = @client.get_game(gameid)["Game"]
+
+
+
 	request_url = "#{GAME_REQUEST_BASE_URL}#{gameid}"
 
 
@@ -69,13 +73,13 @@ def fetch_game_info(gameid)
 	result[:publisher] = game["Publisher"]
 	result[:developer] = game["Developer"]
 
+	if game_exists_in_db?(result[:title],result[:platform])
+		return nil
+	end
 
 	boxart_url_end = game["Images"]["boxart"]
 	result[:image_url] = "#{GAME_BASE_IMAGE_URL}#{boxart_url_end}"
 
-	if game_exists_in_db?(result[:title],result[:platform])
-		return nil
-	end
 
 	result[:genres] = get_game_genre(request_url)
 
@@ -142,7 +146,7 @@ end
 					next
 				end
 
-				metacritic_url = build_metacritic_url(gameinfo[:title], platform.name)
+				metacritic_url = build_metacritic_url(gameinfo[:title], gameinfo[:platform])
 
 				if metacritic_url.nil?
 					next

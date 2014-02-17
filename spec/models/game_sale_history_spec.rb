@@ -8,6 +8,12 @@ describe GameSaleHistory do
   it {should respond_to :price}
   it {should be_valid}
 
+  it "should not be associated with more than one game" do
+    game2 = FactoryGirl.create(:game)
+    @game_sale_history.game = game2
+    expect(game2.game_sales.include?(@game_sale_history)).to be_false
+  end
+
   describe "missing date of occurrence" do
     before {@game_sale_history.occurred=nil}
     it {should_not be_valid}

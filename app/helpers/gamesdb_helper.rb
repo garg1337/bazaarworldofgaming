@@ -3,6 +3,11 @@ require 'open-uri'
 require 'timeout'
 
 module GamesdbHelper
+	GAME_REQUEST_BASE_URL = 'http://thegamesdb.net/api/GetGame.php?id=' 
+	METACRITIC_REQUEST_BASE_URL = 'http://www.metacritic.com/game/'
+	GAME_BASE_IMAGE_URL = "http://thegamesdb.net/banners/"
+	CONSOLE_TO_METACRITIC_MAP = Hash.new("fubar")
+	CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
 
 	def self.get_game_genre(url)
 		request = Nokogiri::XML(open(url))
@@ -45,10 +50,6 @@ module GamesdbHelper
 		result[:publisher] = game["Publisher"]
 		result[:developer] = game["Developer"]
 
-		if game_exists_in_db?(result[:title],result[:platform])
-			return nil
-		end
-
 		boxart_url_end = game["Images"]["boxart"]
 		result[:image_url] = "#{GAME_BASE_IMAGE_URL}#{boxart_url_end}"
 
@@ -83,7 +84,7 @@ module GamesdbHelper
 		return url
 	end
 
-	def self.retrieve_metacrtic_score(url)
+	def self.retrieve_metacritic_score(url)
 		begin
 			request = Nokogiri::HTML(open(url))
 			puts("requested page")

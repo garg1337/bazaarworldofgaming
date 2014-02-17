@@ -1,0 +1,24 @@
+.data{
+}
+.SearchTitle{
+margin:0;
+padding-top:50px;
+padding-bottom:20px;
+padding-left:20px;
+}
+.SearchResult{
+margin:0;
+padding-left:20px;
+}
+.boxArt {
+padding-top:10px;
+}
+
+.description {
+overflow: hidden;
+height: 65px;
+}
+.releaseDate {
+margin-top:10px;
+padding-bottom:0px;
+}

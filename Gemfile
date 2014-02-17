@@ -14,9 +14,10 @@ gem 'delayed_job_active_record'
 gem 'sidekiq'
 gem 'sucker_punch', '~> 1.0.1'
 gem "rest-client", "~> 1.6.7"
-
+gem 'turbolinks'
 gem 'protected_attributes'
-
+gem 'execjs'
+gem 'therubyracer'
 group :development, :test do
   gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '2.13.1'

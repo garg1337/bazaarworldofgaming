@@ -14,20 +14,8 @@ require 'timeout'
 
 # Game.delete_all
 
-GAME_REQUEST_BASE_URL = 'http://thegamesdb.net/api/GetGame.php?id=' 
 
-METACRITIC_REQUEST_BASE_URL = 'http://www.metacritic.com/game/'
-
-GAME_BASE_IMAGE_URL = "http://thegamesdb.net/banners/"
-
-
-
-VIABLE_CONSOLE_LIST = ["PC"]
-
-CONSOLE_TO_METACRITIC_MAP = Hash.new("fubar")
-
-CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
-
+	VIABLE_CONSOLE_LIST = ["PC"]
 
 
 	@client = Gamesdb::Client.new
@@ -42,7 +30,7 @@ CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
 		if (!(platform_games.nil?) && platform.id != "4914")
 			platform_games.each do |platform_game|
 				gameinfo = GamesdbHelper.fetch_game_info(platform_game["id"],@client)
-				if gameinfo.nil?
+				if GamesdbHelper.game_exists_in_db?(gameinfo[:title],gameinfo[:platform])
 					next
 				end
 
@@ -58,7 +46,7 @@ CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
 					next
 				end
 
-				score = GamesdbHelper.retrieve_metacrtic_score(metacritic_url)
+				score = GamesdbHelper.retrieve_metacritic_score(metacritic_url)
 
 				puts score
 

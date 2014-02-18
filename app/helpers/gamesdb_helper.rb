@@ -58,48 +58,4 @@ module GamesdbHelper
 
 		return result
 	end
-
-	def self.build_metacritic_url(title, platform)
-		metacritic_title = (title.downcase)
-		metacritic_title.gsub!("---", '-')
-		metacritic_title.gsub!(' - ', '---')
-		metacritic_title.gsub!(': ', '-')
-		metacritic_title.gsub!(' ', '-')
-		metacritic_title.gsub!('_', '-')
-		metacritic_title.gsub!("'", '')
-
-		console_metacritic = CONSOLE_TO_METACRITIC_MAP[platform]
-		url = "#{METACRITIC_REQUEST_BASE_URL}#{console_metacritic}/#{metacritic_title}"
-
-		if url.include? "viva-pi"
-			puts("fixing this shit")
-			url = "http://www.metacritic.com/game/xbox-360/viva-pinata-trouble-in-paradise"
-		end
-
-		if url.include?("[platinum-hits]") || url.include?("combo-pack")
-			puts("fixing this shit")
-			return nil
-		end
-
-		return url
-	end
-
-	def self.retrieve_metacritic_score(url)
-		begin
-			request = Nokogiri::HTML(open(url))
-			puts("requested page")
-			score = request.css("div.metascore_w.xlarge")[0]
-			if score != nil
-				score = score.css('span')
-				score = /.*<span itemprop="ratingValue">(.*)<\/span>.*/.match(score.to_s)
-					if score != nil
-						return score[1]
-					end
-			end
-		rescue Exception => ex
-			puts("score fubar'd")
-			puts ex
-		end
-		return "0"
-	end
 end

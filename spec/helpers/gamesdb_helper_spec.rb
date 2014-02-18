@@ -29,5 +29,17 @@ describe GamesdbHelper do
 			gameinfo = GamesdbHelper.fetch_game_info(1,Gamesdb::Client.new)
 			expect(gameinfo).to eq(@haloinfo)
 		end
-	end
+
+    it "should make a url for metacritic" do
+      #expect stubbed value
+      url = GamesdbHelper.build_metacritic_url("halo: combat evolved","pc")
+      expect(url).to eq("")
+    end
+
+    it "should retrieve a metacritic score" do
+      #expect stubbed value
+      score = GamesdbHelper.retrieve_metacritic_score("http://www.metacritic.com/pc/halo-combat-evolved")
+      expect(score).to eq(0)
+    end
+  end
 end

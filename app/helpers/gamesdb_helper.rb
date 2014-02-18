@@ -4,10 +4,7 @@ require 'timeout'
 
 module GamesdbHelper
 	GAME_REQUEST_BASE_URL = 'http://thegamesdb.net/api/GetGame.php?id=' 
-	METACRITIC_REQUEST_BASE_URL = 'http://www.metacritic.com/game/'
 	GAME_BASE_IMAGE_URL = "http://thegamesdb.net/banners/"
-	CONSOLE_TO_METACRITIC_MAP = Hash.new("fubar")
-	CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
 
 	def self.get_game_genre(url)
 		request = Nokogiri::XML(open(url))
@@ -58,4 +55,14 @@ module GamesdbHelper
 
 		return result
 	end
+
+  def self.build_metacritic_url(title,platform)
+    #stubbed
+    return ""
+  end
+  
+  def self.retrieve_metacritic_score(url)
+    #stubbed
+    return 0
+  end
 end

@@ -34,23 +34,20 @@ require 'timeout'
 					next
 				end
 
-				metacritic_url = GamesdbHelper.build_metacritic_url(gameinfo[:title], gameinfo[:platform])
-
+				
+        metacritic_url = GamesdbHelper.build_metacritic_url(gameinfo[:title], gameinfo[:platform])
 				if metacritic_url.nil?
 					next
 				end
 
-				puts(metacritic_url)
 
-				if (metacritic_url == "http://www.metacritic.com/game/pc/mission-against-terror")
-					next
-				end
+			  puts(metacritic_url)
 
 				score = GamesdbHelper.retrieve_metacritic_score(metacritic_url)
 
 				puts score
 
-				gameinfo[:search_title] = StringHelper.create_search_title(gameinfo[:title])
+			  gameinfo[:search_title] = StringHelper.create_search_title(gameinfo[:title])
 
 				g = Game.create!(gameinfo)
 			

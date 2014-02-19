@@ -1,10 +1,56 @@
+<div class="container">
+	<div class="row">
+		<div class="SearchBarContainer">
+			<form action="#" method="get">
+				<div class="input-group">
+					<form class="well form-search">
+						<div class="span8">
+							<input type="text" class="span8 search-query">
+						</div>
+						<div class="span4">
+							<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
+						</div>
+					</form>
+				</div>
+			</form>
+		</div>
 
+		<div class="SearchResultContainer">
+		<div class="SearchTitle">
+			<h2> Results for <%= params[:stuff] %>... </h2>
+		</div>
 
-<div class = "center hero-unit">
-	You searched for <%= params[:stuff] %>
+		<% @results.each do | result | %>
+			<div class="SearchResult row">
+			<div class="span1 boxArt">
+				<img src="<%= result.image_url%>"> </img>
+			</div>
 
+			<div class = "span8 display">
+				<div class = "row">
+					<div class = "span7 gameTitle">
+						<h4><a href="<%= result.id %>"><%= result.title%></a></h4>
+					</div>
+					<div class = "pull-right releaseDate">
+						<span class="label label-default"><%= result.release_date%></span>
+					</div>
+				</div>
+				<div class = "description" id = "dot1">
+					<%= result.description%>
+				</div>
+				<div class = "labels">
+				<div class="pull-right"><span class="label label-info">shooter</span>
+					<% @game.genres.each do |genre| %>
+						<span class="label label-info"><%= genre %></span>
+        				<% end %>
+				</div>         
+				</div>
+
+				</div>
+			</div>
+
+			<hr>	
+		<% end %>
+
+	</div>
 </div>
-	<% @results.each do | result | %>
-	<a href = "<%= result.id %>"><p> result: <%= result.title%></p></a>
-	<% end %>
-

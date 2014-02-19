@@ -1,0 +1,64 @@
+<div class = "container">
+      <div class = "container-fluid" id="top-cont">
+        
+        <div class = "row">
+        	<div class = "well" id="top">
+        		<img style = "height:auto; width:auto; max-width:300px; max-height:300px" src='<%= @game.image_url %>' class = "img-rounded">
+
+        	</div>
+        	<div class = "well" id ="info">
+        		<!--:genres,  -->
+        		<p>Title: <%= @game.title %></p>
+        		<p> Genre:
+        			<% @game.genres.each do |genre| %>
+        				<%= genre %>
+        			<% end %>
+        		</p>
+        		<p>MetaCritic Rating: <%= @game.metacritic_rating %></p>
+        		<p>Release Date:<%= @game.release_date %></p>
+        		<p>Developer:<%= @game.developer %></p>
+        		<p>Publisher:<%= @game.publisher %></p>
+        		<p>Rating:<%= @game.esrb_rating %></p>
+        		<p>Players: <%= @game.players %></p>
+        		<p>Coop: <%= @game.coop %></p>
+
+        	</div>
+        	<% @game.game_sales.each do |sale| %>
+        	<div class = "well" id = "top">
+        		<p><%= sale.store %> </p>
+        	</div>
+        	<% end %>
+        	
+        </div>
+      </div> 
+      <div class = "well">
+        	  <p><%= @game.description %></p>
+        	</div>
+     
+	    <button class="btn btn-default">
+	    	Price History
+	    </button>
+	  <!--
+	  	<div class = "container">
+		    <div class = "row">
+		    	<div class = "well" id="top">
+	        		<p>Steam:</p>
+	        		<p><a href="https://store.steampowered.com/<%= yield(:steam_link) %>"><%= yield(:steam) %></a></p>
+
+	        	</div>
+	        	<div class = "well" id ="top">
+	        		<p>GoG:</p>
+	        		<p><a href="https:www.gog.com/<%= yield(:gog_link) %>"><%= yield(:gog) %></a></p>
+	        	</div>
+	        	<div class = "well" id = "top">
+	        		<p>Green Man Gaming:</p>
+	        		<p><a href="https://www.greenmangaming.com/<%= yield(:gmg_link) %>"><%= yield(:gmg) %></a></p>
+	        	</div>
+	        	<div class = "well" id = "top">
+	        		<p>Amazon:</p>
+	        		<p><a href="https://www.amazon.com/<%= yield(:amazon_link) %>"><%= yield(:amazon) %></a></p>
+	        	</div>
+		    </div>
+		</div>-->
+	  
+	</div>

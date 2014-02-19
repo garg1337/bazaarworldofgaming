@@ -1,0 +1,10 @@
+
+
+<div class = "center hero-unit">
+	You searched for <%= params[:stuff] %>
+
+</div>
+	<% @results.each do | result | %>
+	<a href = "<%= result.id %>"><p> result: <%= result.title%></p></a>
+	<% end %>
+

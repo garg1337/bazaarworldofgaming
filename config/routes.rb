@@ -1,4 +1,5 @@
 Bazaarworldofgaming::Application.routes.draw do
+  get "search_page/searchpage"
   get "test/test"
   get "games_pages/game"
   # The priority is based upon order of creation: first created -> highest priority.

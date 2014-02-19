@@ -1,9 +1,12 @@
 Bazaarworldofgaming::Application.routes.draw do
+
   
   get "welcome/index"
   #get "game/show"
   get "game/search"
   resources :game 
+
+  get "search_page/searchpage"
   get "test/test"
   get "games_pages/game"
   

@@ -16,4 +16,13 @@ describe Game do
     it { should_not be_valid}
   end
 
+  describe "there should be games in the test library" do
+    count = Game.count
+    if count == 0
+      puts "test db is empty run 'rake db:seed RAILS_ENV=test' with game parser in seeds.rb"
+    end
+    subject {count}
+    it {should_not eq(0)}
+  end
+
 end

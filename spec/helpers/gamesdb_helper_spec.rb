@@ -32,13 +32,13 @@ describe GamesdbHelper do
 
     it "should make a url for metacritic" do
       #expect stubbed value
-      url = GamesdbHelper.build_metacritic_url("halo: combat evolved","pc")
-      expect(url).to eq("")
+      url = GamesdbHelper.build_metacritic_url("halo: combat evolved","PC")
+      expect(url).to eq("http://www.metacritic.com/game/pc/halo-combat-evolved")
     end
 
     it "should retrieve a metacritic score" do
       #expect stubbed value
-      score = GamesdbHelper.retrieve_metacritic_score("http://www.metacritic.com/pc/halo-combat-evolved")
+      score = GamesdbHelper.retrieve_metacritic_score("http://www.metacritic.com/game/pc/halo-combat-evolved")
       expect(score).to eq(0)
     end
   end

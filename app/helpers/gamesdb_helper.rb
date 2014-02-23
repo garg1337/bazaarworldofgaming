@@ -5,6 +5,9 @@ require 'timeout'
 module GamesdbHelper
 	GAME_REQUEST_BASE_URL = 'http://thegamesdb.net/api/GetGame.php?id=' 
 	GAME_BASE_IMAGE_URL = "http://thegamesdb.net/banners/"
+	METACRITIC_REQUEST_BASE_URL = 'http://www.metacritic.com/game/'
+	CONSOLE_TO_METACRITIC_MAP = Hash.new("fubar")
+	CONSOLE_TO_METACRITIC_MAP["PC"] = "pc"
 
 	def self.get_game_genre(url)
 		request = Nokogiri::XML(open(url))
@@ -56,10 +59,42 @@ module GamesdbHelper
 		return result
 	end
 
-  def self.build_metacritic_url(title,platform)
-    #stubbed
-    return ""
-  end
+
+	def self.title_to_metacritic_title(title)
+		metacritic_title = (title.downcase)
+		metacritic_title.gsub!("---", '-')
+		metacritic_title.gsub!(' - ', '---')
+		metacritic_title.gsub!(': ', '-')
+		metacritic_title.gsub!(' ', '-')
+		metacritic_title.gsub!('_', '-')
+		metacritic_title.gsub!("'", '')
+		return metacritic_title
+	end
+
+  	def self.build_metacritic_url(title,platform="PC")
+		metacritic_title = title_to_metacritic_title(title)
+
+		console_metacritic = CONSOLE_TO_METACRITIC_MAP[platform]
+		metacritic_url = "#{METACRITIC_REQUEST_BASE_URL}#{console_metacritic}/#{metacritic_title}"
+
+		if metacritic_url.include? "viva-pi"
+			puts("fixing this shit")
+			metacritic_url = "http://www.metacritic.com/game/xbox-360/viva-pinata-trouble-in-paradise"
+		end
+
+
+		if metacritic_url.include? "[platinum-hits]"
+			puts("Known Issue(platinum-hits)")
+			return nil
+		end
+
+		if metacritic_url.include? "combo-pack"
+			puts("Known Issue(combo-pack)")
+			return nil
+		end
+
+		return metacritic_url
+	end
   
   def self.retrieve_metacritic_score(url)
     #stubbed

@@ -35,7 +35,7 @@ require 'timeout'
 				end
 
 				
-        metacritic_url = GamesdbHelper.build_metacritic_url(gameinfo[:title], gameinfo[:platform])
+        		metacritic_url = GamesdbHelper.build_metacritic_url(gameinfo[:title], gameinfo[:platform])
 				if metacritic_url.nil?
 					next
 				end

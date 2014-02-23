@@ -39,7 +39,7 @@ describe GamesdbHelper do
     it "should retrieve a metacritic score" do
       #expect stubbed value
       score = GamesdbHelper.retrieve_metacritic_score("http://www.metacritic.com/game/pc/halo-combat-evolved")
-      expect(score).to eq(0)
+      expect(score).to eq("83")
     end
   end
 end

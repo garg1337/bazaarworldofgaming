@@ -93,11 +93,28 @@ module GamesdbHelper
 			return nil
 		end
 
+		if (metacritic_url == "http://www.metacritic.com/game/pc/mission-against-terror")
+			return nil
+		end
+
 		return metacritic_url
 	end
   
-  def self.retrieve_metacritic_score(url)
-    #stubbed
-    return 0
+  	def self.retrieve_metacritic_score(url)
+    	begin
+			result = Nokogiri::HTML(open(url))
+			score = result.css("div.metascore_w.xlarge")[0]
+			if score != nil
+				score = score.css('span')
+				score = /.*<span itemprop="ratingValue">(.*)<\/span>.*/.match(score.to_s)
+				if score != nil
+					return score[1]
+				end
+			end
+		rescue Exception => ex
+			puts("score fubar'd")
+		end
+
+		return "0"
   end
 end

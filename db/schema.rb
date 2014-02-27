@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140209205733) do
+ActiveRecord::Schema.define(version: 20140227001325) do
 
   create_table "game_sale_histories", force: true do |t|
     t.datetime "occurred"
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(version: 20140209205733) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "search_title"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "username"
   end
 
 end

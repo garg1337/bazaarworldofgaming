@@ -1,6 +1,7 @@
 Bazaarworldofgaming::Application.routes.draw do
 
   
+  get "users/new"
   get "welcome/index"
   #get "game/show"
   get "game/search"

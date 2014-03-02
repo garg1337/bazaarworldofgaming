@@ -1,7 +1,8 @@
 Bazaarworldofgaming::Application.routes.draw do
 
   
-  get "users/new"
+  match '/signup', to: 'users#new', via: 'get'
+  resources :users
   get "welcome/index"
   #get "game/show"
   get "game/search"

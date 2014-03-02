@@ -26,6 +26,41 @@ module GameSearchHelper
     return exact_matches | series_matches | partial_matches
   end
 
+
+  def self.find_and_filter_games(title, user)
+    games_list = GameSearchHelper.find_game(title)
+    already_owned = user.games
+    return games_list - already_owned
+  end
+
+
+
+  def self.filter_games_by_metacritic(games_list, lower_bound, upper_bound)
+    filtered_results = Array.new
+    games_list.each do |game|
+      rating = game.metacritic_rating.to_i
+      if (rating >= lower_bound and rating <= upper_bound)
+        filtered_results.push(game)
+      end
+    end
+
+    return filtered_results
+  end
+
+
+  def self.sort_games_by_metacritic_asc(games_list)
+    return games_list.sort{|x,y| x.metacritic_rating <=> y.metacritic_rating}
+  end
+
+  def self.sort_games_by_metacritic_desc(games_list)
+    return games_list.sort{|x,y| y.metacritic_rating <=> x.metacritic_rating}
+  end
+
+
+
+
+
+
   def self.getGameLisPartialMatch(words_list)
     counts = Hash.new(0)
     words_list.each do |word|

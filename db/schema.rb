@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140227001325) do
+ActiveRecord::Schema.define(version: 20140302000728) do
 
   create_table "game_sale_histories", force: true do |t|
     t.datetime "occurred"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20140227001325) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
+    t.string   "password_digest"
   end
 
 end

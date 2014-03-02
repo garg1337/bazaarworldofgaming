@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
   
   before { @user = User.new(name: "Example User", email: "user@example.com",
-   				username: "testing", password: "pass", password_confirmation: "pass") }
+   				username: "testing", password: "password", password_confirmation: "password") }
 
   subject { @user }
 
@@ -65,6 +65,7 @@ describe User do
   describe "when email address is already taken" do
     before do
       user_with_same_email = @user.dup
+      user_with_same_email.email = @user.email.upcase
       user_with_same_email.username = "example"
       user_with_same_email.save
     end

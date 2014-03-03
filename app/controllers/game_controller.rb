@@ -26,6 +26,7 @@ class GameController < ApplicationController
   	if current_user != nil
       if current_user.games.find_by_title(@blah.title) == nil
   		  current_user.games << @blah
+        flash[:success] = "Game added successfully"
       end
   	end
   	redirect_to :back

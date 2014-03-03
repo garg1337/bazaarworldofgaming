@@ -5,7 +5,6 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "jquery" %>
-  <%= javascript_include_tag "bootstra.min" %>
   <%= javascript_include_tag "jquery.dotdotdot" %>
   <%= csrf_meta_tags %>
 </head>
@@ -15,10 +14,26 @@
         <div class="container">
           <%= link_to "Bazaar World", '#', id: "logo" %>
           <nav>
-            <ul class="nav pull-right">
+            <ul class="nav navbar-nav pull-right">
               <li><%= link_to "Home", root_path %></li>
               <li><%= link_to "Games",    '#' %></li>
-              <li><%= link_to "Sign In", signin_path %></li>
+              <% if signed_in? %>
+                <li class="dropdown">
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Account <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "Settings", '#' %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Sign out", signout_path, method: "delete" %>
+                </li>
+              </ul>
+            </li>
+            <% else %>
+              <li><%= link_to "Sign in", signin_path %></li>
+            <% end %>
             </ul>
           </nav>
         </div>

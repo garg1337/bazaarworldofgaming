@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140302000728) do
+ActiveRecord::Schema.define(version: 20140303025051) do
 
   create_table "game_sale_histories", force: true do |t|
     t.datetime "occurred"
@@ -58,6 +58,9 @@ ActiveRecord::Schema.define(version: 20140302000728) do
     t.datetime "updated_at"
     t.string   "username"
     t.string   "password_digest"
+    t.string   "remember_token"
   end
+
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 
 end

@@ -9,4 +9,12 @@ FactoryGirl.define do
     genres        ["action"]
     metacritic_rating    "N/A"
   end
+
+  factory :user do
+    name "Bazaar"
+    email "bazaar@world.gaming"
+    username "bazaar"
+    password "bazaar"
+    password_confirmation "bazaar"   
+  end
 end

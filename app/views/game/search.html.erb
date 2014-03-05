@@ -1,5 +1,6 @@
 <div class="Container">
 	<div class="row">
+		<!--
 		<div class="SearchBarContainer">
 			<form action="#" method="get">
 				<div class="input-group">
@@ -13,7 +14,28 @@
 					</form>
 				</div>
 			</form>
+		</div> -->
+
+		<%= form_tag("/game/search", method: "get") do %>
+		<%= text_field_tag(:stuff) %>
+		<%= submit_tag("Search") %>
+		<div>
+			<div class = "Input">
+				<div class "form-inline">
+					sort by: 
+					<%= radio_button_tag(:method, '0') %>
+					relavance 
+					<%= radio_button_tag(:method, '1') %>
+					rating
+				</div>
+			</div>
 		</div>
+		<% end %>
+
+
+		
+
+
 
 		<div class="SearchResultContainer">
 		<div class="SearchTitle">
@@ -33,6 +55,9 @@
 					</div>
 					<div class = "pull-right releaseDate">
 						<span class="label label-default"><%= result.release_date%></span>
+					</div>
+					<div class = "pull-right metaScore">
+						<span class="label label-default"><%= result.metacritic_rating%></span>
 					</div>
 				</div>
 				<div class = "description" id = "dot1">

@@ -4,8 +4,14 @@ class GameController < ApplicationController
   
   def search
   	#@results = Game.find_by_title(params[:stuff])
-  	@results = GameSearchHelper.find_game(params[:stuff])
+	@results = GameSearchHelper.find_game(params[:stuff])
+	if params[:method] == '1'
+	@results = GameSearchHelper.sort_games_by_metacritic_desc(@results)
+	end
+
+	
   end
+
 
   def show
   	@game = Game.find(params[:id])

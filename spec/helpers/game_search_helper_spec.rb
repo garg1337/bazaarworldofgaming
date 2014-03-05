@@ -29,7 +29,7 @@ describe GameSearchHelper do
 		expect(games_list.size).to eq(8)
  	end
 
- 	it "should return the most relevant one first: " do
+ 	it "should return the most relevant one first" do
 		# puts "number of games: " + Game.all.size.to_s
 		games_list = GameSearchHelper.find_game("command conquer tiberian sun")
 		expect(games_list.first[:search_title]).to eq("command conquer tiberian sun")
@@ -85,7 +85,7 @@ describe GameSearchHelper do
 
  		it "should have two elements left" do
  			words_list = ["aa", "b", "c", "d", "ef"]
-	 		GameSearchHelper.delChar(words_li:qst)
+	 		GameSearchHelper.delChar(words_list)
 	 		expect(words_list.size).to eq(2)
 	 	end
 
@@ -101,7 +101,7 @@ describe GameSearchHelper do
  				filtered_list = GameSearchHelper.find_and_filter_games("halo", user)
  				expect(filtered_list.include?(games_list[0])).to be_false 
  			end
- 			it "should filter games by metacritic" do
+ 			it "should filter games by metaclritic" do
  				lowscore = Game.create(title: "test", search_title: "test", metacritic_rating: "40")
  				highscore = Game.create(title: "test2", search_title: "test2", metacritic_rating: "100")
  				all_games = Game.all

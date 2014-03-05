@@ -101,7 +101,7 @@ describe GameSearchHelper do
  				filtered_list = GameSearchHelper.find_and_filter_games("halo", user)
  				expect(filtered_list.include?(games_list[0])).to be_false 
  			end
- 			it "should filter games by metaclritic" do
+ 			it "should filter games by metacritic" do
  				lowscore = Game.create(title: "test", search_title: "test", metacritic_rating: "40")
  				highscore = Game.create(title: "test2", search_title: "test2", metacritic_rating: "100")
  				all_games = Game.all

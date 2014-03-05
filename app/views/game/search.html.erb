@@ -17,7 +17,7 @@
 		</div> -->
 
 		<%= form_tag("/game/search", method: "get") do %>
-		<%= text_field_tag(:stuff) %>
+		<%= text_field_tag(:stuff, params[:stuff]) %>
 		<%= submit_tag("Search") %>
 		<div>
 			<div class = "Input">

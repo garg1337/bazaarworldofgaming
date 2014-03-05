@@ -1,0 +1,35 @@
+<h1> Welcome  <%= current_user.name %> </h1>
+<h3> Here are a list of your selected games </h3>
+<% current_user.games.each do |game| %>
+	<div class="SearchResult row">
+			<div class="span1 boxArt">
+				<img src="<%= game.image_url%>"> </img>
+			</div>
+
+			<div class = "span8 display">
+				<div class = "row">
+					<div class = "span7 gameTitle">
+						<h4>
+							<%= link_to game.title, :controller => "game", :action => "show", :id => game.id %>
+						</h4>
+					</div>
+					<div class = "pull-right releaseDate">
+						<span class="label label-default"><%= game.release_date%></span>
+					</div>
+				</div>
+				<div class = "description" id = "dot1">
+					<%= game.description%>
+				</div>
+				<div class = "labels">
+				<div class="pull-right">
+					<% game.genres.each do |genre| %>
+						<span class="label label-info"><%= genre %></span>
+        				<% end %>
+				</div>         
+				</div>
+
+			</div>
+	</div>
+<% end %>
+
+		

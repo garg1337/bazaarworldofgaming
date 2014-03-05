@@ -28,7 +28,9 @@
         		<p><%= sale.store %> </p>
         	</div>
         	<% end %>
-        	
+        	<div class = "well" id = "top">
+                <%= button_to "Add Game to Profile", {action: "add", gameid: @currentID}, form_class: "top" %>
+            </div>
         </div>
       </div> 
       <div class = "well">

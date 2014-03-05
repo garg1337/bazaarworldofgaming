@@ -12,7 +12,9 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
-
+  def show
+    
+  end
   private
 
     def user_params

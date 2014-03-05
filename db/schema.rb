@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140303025051) do
+ActiveRecord::Schema.define(version: 20140305061626) do
 
   create_table "game_sale_histories", force: true do |t|
     t.datetime "occurred"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20140303025051) do
     t.float    "saleamt"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "game_user_wrappers", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "game_id"
   end
 
   create_table "games", force: true do |t|

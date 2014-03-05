@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
 					  uniqueness: { case_sensitive: false }
 	validates :username, presence: true,
 						 length: { maximum: 50 }, uniqueness: true
-	has_many :games, dependent: :destroy
+	has_many :game_user_wrapper
+	has_many :games, through: :game_user_wrapper 
 	has_secure_password
 	validates :password, length: { minimum: 6 }
 	

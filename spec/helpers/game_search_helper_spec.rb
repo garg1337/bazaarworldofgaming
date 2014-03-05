@@ -29,7 +29,7 @@ describe GameSearchHelper do
 		expect(games_list.size).to eq(8)
  	end
 
- 	it "should return the most relevant one first: " do
+ 	it "should return the most relevant one first" do
 		# puts "number of games: " + Game.all.size.to_s
 		games_list = GameSearchHelper.find_game("command conquer tiberian sun")
 		expect(games_list.first[:search_title]).to eq("command conquer tiberian sun")
@@ -85,7 +85,7 @@ describe GameSearchHelper do
 
  		it "should have two elements left" do
  			words_list = ["aa", "b", "c", "d", "ef"]
-	 		GameSearchHelper.delChar(words_li:qst)
+	 		GameSearchHelper.delChar(words_list)
 	 		expect(words_list.size).to eq(2)
 	 	end
 

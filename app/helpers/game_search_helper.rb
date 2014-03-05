@@ -49,11 +49,11 @@ module GameSearchHelper
 
 
   def self.sort_games_by_metacritic_asc(games_list)
-    return games_list.sort{|x,y| x.metacritic_rating <=> y.metacritic_rating}
+    return games_list.sort{|x,y| x.metacritic_rating.to_i <=> y.metacritic_rating.to_i}
   end
 
   def self.sort_games_by_metacritic_desc(games_list)
-    return games_list.sort{|x,y| y.metacritic_rating <=> x.metacritic_rating}
+    return games_list.sort{|x,y| y.metacritic_rating.to_i <=> x.metacritic_rating.to_i}
   end
 
 

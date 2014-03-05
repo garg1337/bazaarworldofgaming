@@ -85,9 +85,44 @@ describe GameSearchHelper do
 
  		it "should have two elements left" do
  			words_list = ["aa", "b", "c", "d", "ef"]
-	 		GameSearchHelper.delChar(words_list)
+	 		GameSearchHelper.delChar(words_li:qst)
 	 		expect(words_list.size).to eq(2)
 	 	end
 
+ 	end
+
+ 	describe "filtering and sorting" do
+ 		let(:user) {FactoryGirl.create(:user)} 
+ 		describe "find and filter games" do
+ 			it "should filter out already owned games" do
+ 				games_list = GameSearchHelper.find_game("halo")
+ 				user.games << games_list[0]
+ 				puts user.games
+ 				filtered_list = GameSearchHelper.find_and_filter_games("halo", user)
+ 				expect(filtered_list.include?(games_list[0])).to be_false 
+ 			end
+ 			it "should filter games by metacritic" do
+ 				lowscore = Game.create(title: "test", search_title: "test", metacritic_rating: "40")
+ 				highscore = Game.create(title: "test2", search_title: "test2", metacritic_rating: "100")
+ 				all_games = Game.all
+ 				filtered_games = GameSearchHelper.filter_games_by_metacritic(all_games,60,90)
+ 				expect(all_games.include?(lowscore) && all_games.include?(highscore)).to be_true
+ 				expect(filtered_games.include?(lowscore)).to be_false
+ 				expect(filtered_games.include?(highscore)).to be_false
+ 			end
+ 		end
+ 		describe "sort by metacritic" do
+ 			before do 
+ 				@low = Game.new(title: "test", search_title: "test", metacritic_rating: "40")
+ 				@med = Game.new(title: "test2", search_title: "test2", metacritic_rating: "70")
+ 				@high = Game.new(title: "test3", search_title: "test3", metacritic_rating: "100")
+ 			end
+ 			it "should return a list in ascending" do
+ 				expect(GameSearchHelper.sort_games_by_metacritic_asc([@med,@high,@low])).to eq([@low,@med,@high])
+ 			end
+ 			it "should return a list in descending order" do
+ 				expect(GameSearchHelper.sort_games_by_metacritic_desc([@med,@high,@low])).to eq([@high,@med,@low])
+ 			end
+ 		end
  	end
 end

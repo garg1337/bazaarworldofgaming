@@ -1,38 +1,42 @@
 <div class = "container">
       <div class = "container-fluid" id="top-cont">
-        
+        <h1 class = "header"><%=@game.title %> <% if @best!=nil %>- $<%= @best.saleamt %><%end%></h1>
         <div class = "row">
         	<div class = "well" id="top">
-        		<img style = "height:auto; width:auto; max-width:300px; max-height:300px" src='<%= @game.image_url %>' class = "img-rounded">
-
+        		<img style = "height:auto; width:auto; max-width:300px; max-height:300px" src='<%= @game.image_url %>' class = "img-rounded"> <br />
+                <% if signed_in? %>
+                    <div id = "addgame">
+                        <%= button_to "Add Game to Profile", {action: "add", gameid: @currentID}, form_class: "top" %>
+                    </div> 
+                <% end %>    
         	</div>
         	<div class = "well" id ="info">
         		<!--:genres,  -->
-        		<p>Title: <%= @game.title %></p>
         		<p> Genre:
-        			<% @game.genres.each do |genre| %>
-        				<%= genre %>
-        			<% end %>
+                    <% if @game.genres.empty? %>
+                       n/a
+                    <% else %>
+        			    <% @game.genres.each do |genre| %>
+        				    <%= genre %>
+        			    <% end %>
+                    <%end%>
         		</p>
         		<p>MetaCritic Rating: <%= @game.metacritic_rating %></p>
-        		<p>Release Date:<%= @game.release_date %></p>
-        		<p>Developer:<%= @game.developer %></p>
-        		<p>Publisher:<%= @game.publisher %></p>
-        		<p>Rating:<%= @game.esrb_rating %></p>
+        		<p>Release Date: <%= @game.release_date %></p>
+        		<p>Developer: <%= @game.developer %></p>
+        		<p>Publisher: <%= @game.publisher %></p>
+        		<p>Rating: <%= @game.esrb_rating %></p>
         		<p>Players: <%= @game.players %></p>
         		<p>Coop: <%= @game.coop %></p>
 
         	</div>
         	<% @game.game_sales.each do |sale| %>
-        	<div class = "well" id = "top">
-        		<p><%= sale.store %> </p>
+        	<div class = "well" id = "sales">
+        		<p><a href= "<%=sale.url%>"><%= sale.store %></a>: <span class = "price">$<%= sale.saleamt %></span></p>
         	</div>
         	<% end %>
-        	<div class = "well" id = "top">
-                <%= button_to "Add Game to Profile", {action: "add", gameid: @currentID}, form_class: "top" %>
-            </div>
         </div>
-      </div> 
+      </div>
       <div class = "well">
         	  <p><%= @game.description %></p>
         	</div>

@@ -49,6 +49,7 @@
 		</div>
 
 		<% @results.each do | result | %>
+			<% best = best_price(result) %>
 			<div class="SearchResult row">
 			<div class="span1 boxArt">
 				<img src="<%= result.image_url%>"> </img>
@@ -57,7 +58,7 @@
 			<div class = "span8 display">
 				<div class = "row">
 					<div class = "span7 gameTitle">
-						<h4><a href="<%= result.id %>"><%= result.title%></a></h4>
+						<h4><a href="<%= result.id %>"><%= result.title%></a> <%if best != nil%>- $<%= best.saleamt %><%end%></h4>
 					</div>
 					<div class = "pull-right releaseDate">
 						<span class="label label-default"><%= result.release_date%></span>

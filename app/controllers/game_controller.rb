@@ -1,23 +1,31 @@
 
 include GameSearchHelper 
+include GameHelper
+
 class GameController < ApplicationController
   
   def search
   	#@results = Game.find_by_title(params[:stuff])
-	@results = GameSearchHelper.find_game(params[:stuff])
-	if params[:method] == '1'
-		@results = GameSearchHelper.sort_games_by_metacritic_desc(@results)
-	end
-	if params[:method] == '2'
-		@results = GameSearchHelper.sort_games_by_metacritic_asc(@results)
-	end
-	@results = GameSearchHelper.filter_games_by_metacritic(@results,params[:low].to_i,params[:high].to_i)
+     @results = nil
+     if signed_in? && params[:filter] == "true"
+       @results = GameSearchHelper.find_and_filter_games(params[:stuff],current_user)
+     else
+       @results = GameSearchHelper.find_game(params[:stuff])
+     end
+	   if params[:method] == '1'
+		   @results = GameSearchHelper.sort_games_by_metacritic_desc(@results)
+	   end
+	   if params[:method] == '2'
+		    @results = GameSearchHelper.sort_games_by_metacritic_asc(@results)
+	   end
+	   @results = GameSearchHelper.filter_games_by_metacritic(@results,params[:low].to_i,params[:high].to_i)
   end
 
 
   def show
   	@game = Game.find(params[:id])
   	@currentID = params[:id]
+    @best = GameHelper.best_price(@game)
 
   end
 

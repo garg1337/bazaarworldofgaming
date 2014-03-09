@@ -78,7 +78,7 @@ module GamesdbHelper
 		metacritic_url = "#{METACRITIC_REQUEST_BASE_URL}#{console_metacritic}/#{metacritic_title}"
 
 		if metacritic_url.include? "viva-pi"
-			puts("fixing this shit")
+			puts("Known Issue")
 			metacritic_url = "http://www.metacritic.com/game/xbox-360/viva-pinata-trouble-in-paradise"
 		end
 
@@ -115,6 +115,6 @@ module GamesdbHelper
 			puts("score fubar'd")
 		end
 
-		return "0"
+		return "n/a"
   end
 end

@@ -234,7 +234,13 @@ module GameSearchHelper
 
     #try game description, #need check for dlcs.
     if(first_game_descrip == second_game_descrip)
-      return true
+
+      #the descriptions are for two separate dlcs
+      if first_game_descrip.include? "Requires the base game" and second_game_descrip.include? "Requires the base game"
+        return false
+      else
+        return true
+      end
     end
 
 

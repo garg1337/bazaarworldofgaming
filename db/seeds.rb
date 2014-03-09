@@ -21,8 +21,6 @@ require 'open-uri'
 require 'timeout'
 
 
-Game.delete_all
-
 
 	VIABLE_CONSOLE_LIST = ["PC"]
 

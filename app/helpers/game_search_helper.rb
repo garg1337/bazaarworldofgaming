@@ -7,6 +7,9 @@ require 'restclient'
 module GameSearchHelper
     
   def self.find_game(title)
+    if(title == "")
+      return []
+    end
     words_list = title.scan /[[:alnum:]]+/
     delChar(words_list)
 

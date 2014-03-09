@@ -255,9 +255,15 @@ module SteamHelper
     if game == nil
       puts "Making new Game!"
   #    File.open("db/test_files/steam_misses.txt", 'a+') { |file| file << (search_title+"\n") }
+
+      mcurl = GamesdbHelper.build_metacritic_url(game_title)
+
+      metacritic_rating = GamesdbHelper.retrieve_metacritic_score(mcurl)
+
+
       game = Game.create!(title: game_title, release_date: release_date, 
           description: game_description,  publisher: publisher, developer: developer, genres: genres, 
-           image_url: box_art_url, search_title: search_title)
+           image_url: box_art_url, search_title: search_title, metacritic_rating: metacritic_rating)
 
     elsif !(GameSearchHelper.are_games_same(game.search_title, search_title, game.description, game_description))
       puts "Making new game based on another game's info"

@@ -115,6 +115,6 @@ module GamesdbHelper
 			puts("score fubar'd")
 		end
 
-		return "n/a"
+		return "0"
   end
 end

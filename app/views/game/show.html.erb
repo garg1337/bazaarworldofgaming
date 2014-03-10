@@ -30,11 +30,18 @@
         		<p>Coop: <%= @game.coop %></p>
 
         	</div>
-        	<% @game.game_sales.each do |sale| %>
+        	
         	<div class = "well" id = "sales">
-        		<p><a href= "<%=sale.url%>"><%= sale.store %></a>: <span class = "price">$<%= sale.saleamt %></span></p>
+                <table>
+                <% @game.game_sales.each do |sale| %>
+        		  <tr>
+                        <td><a href= "<%=sale.url%>"><%= sale.store %></a>:</td> 
+                        <td><span class = "price">$<%= sale.saleamt %></span></td>
+                  <tr>
+                <% end %>
+                </table>
         	</div>
-        	<% end %>
+        	
         </div>
       </div>
       <div class = "well">

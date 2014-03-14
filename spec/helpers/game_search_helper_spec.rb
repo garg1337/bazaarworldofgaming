@@ -125,4 +125,71 @@ describe GameSearchHelper do
  			end
  		end
  	end
+
+ 	describe "checking if same" do
+ 		before {@haloinfo = {title: "Halo: Combat Evolved", 
+				release_date: "11/15/2001", 
+				description: "In Halo's twenty-sixth century setting, the player assumes the role of the Master Chief, a cybernetically enhanced super-soldier. The player is accompanied by Cortana, an artificial intelligence who occupies the Master Chief's neural interface. Players battle various aliens on foot and in vehicles as they attempt to uncover the secrets of the eponymous Halo, a ring-shaped artificial planet.", 
+				esrb_rating: "T - Teen", 
+				players: "4+", 
+				coop: nil, 
+				platform: "PC", 
+				publisher: "Microsoft Game Studios", 
+				developer: "Bungie", 
+				image_url: "http://thegamesdb.net/banners/boxart/original/front/1-1.jpg", 
+				genres: ["Shooter"],
+				search_title: "halo combat evolved"}
+
+				@assassininfo = {title: "Assassin's Creed", 
+				release_date: nil, 
+				description: "The game centers on the use of a machine named the 'Animus', which allows the viewing of the protagonist's genetic memories of his ancestors.Through this plot device, details emerge of a struggle between two factions, the Knights Templar and the Assassins (Hashshashin), over an artifact known as a 'Piece of Eden' and the game primarily takes place during the Third Crusade in the Holy Land in 1191.", 
+				esrb_rating: "M - Mature", 
+				players: "1", 
+				coop: nil, 
+				platform: "PC", 
+				publisher: "Ubisoft", 
+				developer: "Ubisoft Montreal", 
+				image_url: "http://thegamesdb.net/banners/boxart/original/front/12-1.jpg", 
+				genres: ["Shooter"],
+				search_title:"assassins creed"}
+			}
+
+		it "should return true, given two same titles" do
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @haloinfo[:search_title], "", "")).to be_true
+		end
+
+		it "should return true because two search titles include 'game of the year'" do
+			@haloinfo[:search_title] = "halo game of the year"
+			@assassininfo[:search_title] = "assassins creed game of the year"
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], "", "")).to be_true
+		end
+
+		it "should return true, given two same descriptions" do
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @haloinfo[:description])).to be_true
+		end
+
+		it "should check if both descriptions include 'Requires the base game'" do
+			@haloinfo[:description] = "Requires the base game - " + @haloinfo[:description]
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @haloinfo[:description])).to be_false
+		end
+
+		it "should return true because we handle word differentials" do
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @assassininfo[:description])).to be_false
+			
+			halo_search_title = @haloinfo[:search_title]
+			assassin_search_title = @assassininfo[:search_title]
+			
+			@haloinfo[:search_title] = @haloinfo[:search_title] + " superheroes"
+			@assassininfo[:search_title] = @assassininfo[:search_title] + " super heroes"
+			
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @assassininfo[:description])).to be_true
+			
+			@haloinfo[:search_title] = halo_search_title + " civilization"
+			@assassininfo[:search_title] = assassin_search_title + " sid meiers civilization"
+			
+			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @assassininfo[:description])).to be_true
+		end
+
+ 	end
+
 end

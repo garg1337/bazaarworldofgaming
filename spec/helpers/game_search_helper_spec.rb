@@ -126,7 +126,7 @@ describe GameSearchHelper do
  		end
  	end
 
- 	describe "checking if same" do
+ 	describe "checking if given games are same in reality" do
  		before {@haloinfo = {title: "Halo: Combat Evolved", 
 				release_date: "11/15/2001", 
 				description: "In Halo's twenty-sixth century setting, the player assumes the role of the Master Chief, a cybernetically enhanced super-soldier. The player is accompanied by Cortana, an artificial intelligence who occupies the Master Chief's neural interface. Players battle various aliens on foot and in vehicles as they attempt to uncover the secrets of the eponymous Halo, a ring-shaped artificial planet.", 
@@ -189,6 +189,136 @@ describe GameSearchHelper do
 			
 			expect(GameSearchHelper.are_games_same(@haloinfo[:search_title], @assassininfo[:search_title], @haloinfo[:description], @assassininfo[:description])).to be_true
 		end
+
+ 	end
+
+ 	describe "finding right game" do
+ 		before {@haloinfo = {title: "Halo: Combat Evolved", 
+				release_date: "11/15/2001", 
+				description: "In Halo's twenty-sixth century setting, the player assumes the role of the Master Chief, a cybernetically enhanced super-soldier. The player is accompanied by Cortana, an artificial intelligence who occupies the Master Chief's neural interface. Players battle various aliens on foot and in vehicles as they attempt to uncover the secrets of the eponymous Halo, a ring-shaped artificial planet.", 
+				esrb_rating: "T - Teen", 
+				players: "4+", 
+				coop: nil, 
+				platform: "PC", 
+				publisher: "Microsoft Game Studios", 
+				developer: "Bungie", 
+				image_url: "http://thegamesdb.net/banners/boxart/original/front/1-1.jpg", 
+				genres: ["Shooter"],
+				search_title: "halo combat evolved"}
+
+				Game.create(@haloinfo)
+			}
+
+		it "should return true, given exactly same title" do
+			result = GameSearchHelper.find_right_game(@haloinfo[:title], @haloinfo[:description])
+			result.should_not be_nil
+			expect(result[:title]).to eq(@haloinfo[:title])
+ 		end
+
+ 		it "should return true, given exactly same descriptions, though titles can be different" do
+			result = GameSearchHelper.find_right_game("", @haloinfo[:description])
+			result.should_not be_nil
+			expect(result[:title]).to eq(@haloinfo[:title])
+ 		end
+
+ 		it "should return false because neither title nor description exists" do
+ 			result = GameSearchHelper.find_right_game("CS 428", "Software Engineering")
+ 			result.should be_nil
+ 		end
+
+ 		it "should check if search_title in DB includes 'edition'" do
+ 			@assassininfo = {title: "Assassin's Creed Edition", 
+				release_date: nil, 
+				description: "The game centers on the use of a machine named the 'Animus', which allows the viewing of the protagonist's genetic memories of his ancestors.Through this plot device, details emerge of a struggle between two factions, the Knights Templar and the Assassins (Hashshashin), over an artifact known as a 'Piece of Eden' and the game primarily takes place during the Third Crusade in the Holy Land in 1191.", 
+				esrb_rating: "M - Mature", 
+				players: "1", 
+				coop: nil, 
+				platform: "PC", 
+				publisher: "Ubisoft", 
+				developer: "Ubisoft Montreal", 
+				image_url: "http://thegamesdb.net/banners/boxart/original/front/12-1.jpg", 
+				genres: ["Shooter"],
+				search_title:"assassins creed edition"}
+
+			Game.create(@assassininfo)
+
+			result = GameSearchHelper.find_right_game("Assassin's Creed", "")
+ 			result.should_not be_nil
+ 			expect(result[:title]).to eq(@assassininfo[:title])
+ 		end
+
+ 		describe "handling messed up words" do
+ 			
+	 		it "should resolve 'super heroes' and 'superheroes'" do
+	 			@assassininfo = {title: "Assassin's Creed Super Heroes", 
+					release_date: nil, 
+					description: "The game centers on the use of a machine named the 'Animus', which allows the viewing of the protagonist's genetic memories of his ancestors.Through this plot device, details emerge of a struggle between two factions, the Knights Templar and the Assassins (Hashshashin), over an artifact known as a 'Piece of Eden' and the game primarily takes place during the Third Crusade in the Holy Land in 1191.", 
+					esrb_rating: "M - Mature", 
+					players: "1", 
+					coop: nil, 
+					platform: "PC", 
+					publisher: "Ubisoft", 
+					developer: "Ubisoft Montreal", 
+					image_url: "http://thegamesdb.net/banners/boxart/original/front/12-1.jpg", 
+					genres: ["Shooter"],
+					search_title:"assassins creed super heroes"}
+
+				Game.create(@assassininfo)
+
+	 			result = GameSearchHelper.find_right_game("Assassin's Creed Superheroes", "")
+	 			result.should_not be_nil
+	 			expect(result[:title]).to eq(@assassininfo[:title])
+
+				result.update_attribute(:title, "Assassin's Creed Superheroes")
+				result.update_attribute(:search_title, "assassins creed superheroes")
+				
+				result = GameSearchHelper.find_right_game("Assassin's Creed Super Heroes", "")
+				result.should_not be_nil
+
+	 		end
+
+	 		it "should resolve 'civilization' and 'sid meiers civilization'" do
+	 			@civinfo = {title: "Sid Meier's Civilization III", 
+					release_date: nil, 
+					description: "The game centers on the use of a machine named the 'Animus', which allows the viewing of the protagonist's genetic memories of his ancestors.Through this plot device, details emerge of a struggle between two factions, the Knights Templar and the Assassins (Hashshashin), over an artifact known as a 'Piece of Eden' and the game primarily takes place during the Third Crusade in the Holy Land in 1191.", 
+					esrb_rating: "M - Mature", 
+					players: "1", 
+					coop: nil, 
+					platform: "PC", 
+					publisher: "Ubisoft", 
+					developer: "Ubisoft Montreal", 
+					image_url: "http://thegamesdb.net/banners/boxart/original/front/12-1.jpg", 
+					genres: ["Shooter"],
+					search_title:"sid meiers civilization iii"}
+
+				Game.create(@civinfo)
+
+	 			result = GameSearchHelper.find_right_game("Civilization III", "")
+	 			result.should_not be_nil
+	 			expect(result[:title]).to eq(@civinfo[:title])
+
+	 			result.update_attribute(:title, "Civilization III")
+				result.update_attribute(:search_title, "civilization iii")
+				
+				result = GameSearchHelper.find_right_game("Sid Meier's Civilization III", "")
+				result.should_not be_nil
+
+	 		end
+
+ 		end
+
+ 		it "should ignore 'edition', 'game of the year', 'gold', 'package', 'deluxe', 'collection'" do
+ 			words = ['edition', 'game of the year', 'gold', 'package', 'deluxe', 'collection']
+ 			words.each do |word|
+	  			result = GameSearchHelper.find_right_game("halo combat evolved " + word, "")
+ 				result.should_not be_nil
+ 				expect(result[:title]).to eq(@haloinfo[:title])
+			end
+
+			word = 'cs428'
+			result = GameSearchHelper.find_right_game("halo combat evolved " + word, "")
+ 			result.should be_nil
+ 		end
 
  	end
 

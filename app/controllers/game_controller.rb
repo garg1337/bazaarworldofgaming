@@ -7,7 +7,7 @@ class GameController < ApplicationController
   def search
   	#@results = Game.find_by_title(params[:stuff])
      @results = nil
-     if signed_in? && params[:filter] == "true"
+     if signed_in? && current_user.filter
        @results = GameSearchHelper.find_and_filter_games(params[:stuff],current_user)
      else
        @results = GameSearchHelper.find_game(params[:stuff])

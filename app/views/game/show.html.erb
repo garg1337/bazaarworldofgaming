@@ -21,7 +21,13 @@
         			    <% end %>
                     <%end%>
         		</p>
-        		<p>MetaCritic Rating: <%= @game.metacritic_rating %></p>
+        		<p>MetaCritic Rating: 
+                    <%if (@game.metacritic_rating == "0")%> 
+                        <%="n/a"%> 
+                    <%else%> 
+                        <%=@game.metacritic_rating%> 
+                    <%end%>
+                </p>
         		<p>Release Date: <%= @game.release_date %></p>
         		<p>Developer: <%= @game.developer %></p>
         		<p>Publisher: <%= @game.publisher %></p>
@@ -30,16 +36,23 @@
         		<p>Coop: <%= @game.coop %></p>
 
         	</div>
-        	
         	<div class = "well" id = "sales">
-                <table>
-                <% @game.game_sales.each do |sale| %>
-        		  <tr>
-                        <td><a href= "<%=sale.url%>"><%= sale.store %></a>:</td> 
-                        <td><span class = "price">$<%= sale.saleamt %></span></td>
-                  <tr>
-                <% end %>
-                </table>
+                <% if @game.game_sales.empty? %>
+                    <%= "No sales data for this game."%>
+                <% else %>    
+                    <table>
+                    <% @game.game_sales.each do |sale| %>
+        		        <tr>
+                            <td>
+                                <a href= "<%=sale.url%>">
+                                    <%= image_tag("#{sale.store.downcase}.jpg",{size: "59x35"})%>
+                                </a>
+                            </td> 
+                            <td><span class = "price">$<%= sale.saleamt %></span></td>
+                        </tr>
+                    <% end %>
+                    </table>
+                <%end%>    
         	</div>
         	
         </div>

@@ -64,7 +64,13 @@
 						<span class="label label-default"><%= result.release_date%></span>
 					</div>
 					<div class = "pull-right metaScore">
-						<span class="label label-default"><%= result.metacritic_rating%></span>
+						<span class="label label-default">
+							<%if (result.metacritic_rating == "0")%> 
+								<%="n/a"%> 
+							<%else%> 
+								<%=result.metacritic_rating%> 
+							<%end%>
+						</span>
 					</div>
 				</div>
 				<div class = "description" id = "dot1">

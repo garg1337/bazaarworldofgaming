@@ -7,171 +7,112 @@ require 'restclient'
 module AmazonHelper
 
 
-  #we need a separate function to get the first page of amazon because it is different from the other pages
-  def self.parse_first_sale_page
-    amzn_first_page_url = "http://www.amazon.com/s?ie=UTF8&page=1&rh=n%3A2445220011"
+  def self.parse_title(row)
+      title = row.css(".productTitle")
+      title = title.to_s
+      title_encode = title.encode("UTF-8", invalid: :replace, undef: :replace)
+      if !(title_encode.valid_encoding?)
+        puts "Title encoding error!"
+        return nil
+      end
+      if (!title.include? "[")
+        return nil
+      end
+      if(title.include? "MAC")
+        puts "Not avaliable on PC!"
+        return nil
+      end
+      title_start = title.index('<br clear="all">')
+      title_end = title.index("[")
+      title = title[title_start+16...title_end]
+      return title
 
+  end
 
-    result = RestClient.get(amzn_first_page_url)
-    result = Nokogiri::HTML(result)
-
-
-    rows = result.css(".result.product")
-
-
-    rows.each do |row|
-
-
-      title_chunk = row.css("a.title").to_s
-      title_start = title_chunk.index('">')
-      title_end = title_chunk.index("[")
-
-      title = title_chunk[title_start+2...title_end]
-
-      search_title = StringHelper.create_search_title(title)
-
-      game = GameSearchHelper.find_right_game(search_title, "no similar description")
-
-      if game == nil
-        puts "NO GAME FOUND"
-        next
+  def self.get_avaibility(row)
+     if row.to_s.include? "Sign up to be notified when this item becomes available."
+        return false
       end
 
+      if row.to_s.include? "Currently unavailable"
+        return false
+      end
+      return true
+  end
 
-      amzn_price_chunk = row.css(".toeOurPrice").to_s
-      price_chunk_start = amzn_price_chunk.index('">$')
-      price_chunk_end = amzn_price_chunk.index('</a>')
+  def self.parse_sale_price(price_chunk)
+      sale_price_start = price_chunk.index("<span>")
+      sale_price_end = price_chunk.index("</span>")
+      return price_chunk[sale_price_start+6...sale_price_end]
+         
+  end
 
-      sale_price = amzn_price_chunk[price_chunk_start+2...price_chunk_end]
-      puts sale_price
-
+  def self.parse_price_chunk(row)
+      price_chunk = row.css(".newPrice").to_s
+      sale_price = parse_sale_price(price_chunk)
       original_price = sale_price
-
-      original_price_chunk = row.css("strike").to_s
-
-      if original_price_chunk != ""
-        original_price_start = original_price_chunk.index('<strike>')
-        original_price_end = original_price_chunk.index('</strike>')
-        original_price = original_price_chunk[original_price_start+8...original_price_end]
+      if price_chunk.include? "<strike>"
+        original_price = parse_original_price(price_chunk)
       end
+      return [sale_price, original_price]
 
-      puts original_price
+  end
 
-      product_url = row.css(".title").css("a")[0].to_s
+  def self.parse_original_price(price_chunk)
+        original_price_start = price_chunk.index("<strike>")
+        original_price_end = price_chunk.index("</strike>")
+        return price_chunk[original_price_start+8...original_price_end]
+  end
 
-      link_start = product_url.index('<a class="title" href="')
+
+  def self.parse_url(row)
+      product_url = row.css(".productTitle").css("a")[0].to_s
+      link_start = product_url.index('<a href="')
       link_end = product_url.index('">')
-
-      product_url = product_url[link_start+23...link_end]
-
-      puts product_url
-
-
-
-      original_price = '%.2f' %  original_price.delete( "$" ).to_f
-      sale_price = '%.2f' %  sale_price.delete( "$" ).to_f
-
-      occurrence = DateTime.now
-      game_sale = game.game_sales.create!(store: "Amazon", url: product_url, origamt: original_price, saleamt: sale_price, occurrence: occurrence)
-      game_sale_history = game.game_sale_histories.create!(store: "Amazon", price: sale_price, occurred: occurrence)
-
-
-
-
-    end
+      return product_url[link_start+9...link_end]
 
 
   end
 
-
-
   def self.parse_products_off_result_page(result)
     rows = result.css(".result.product")
     rows.each do |row|
-
-      title = row.css(".productTitle")
-
-      title = title.to_s
-
-
-      title_encode = title.encode("UTF-8", invalid: :replace, undef: :replace)
-
-
-      if !(title_encode.valid_encoding?)
+      title = parse_title(row)
+      if title == nil
+        puts "Title not found."
         next
       end
-
-
-      if (!title.include? "[")
-        next
-      end
-
-      if(title.include? "MAC")
-        next
-      end
-
-      title_start = title.index('<br clear="all">')
-      title_end = title.index("[")
-
-      title = title[title_start+16...title_end]
-
-
       #seeing if we find a match
       search_title = StringHelper.create_search_title(title)
-
-      game = GameSearchHelper.find_right_game(search_title, "no similar description")
-
+      #game_description = parse_description(row)
+      game = GameSearchHelper.find_right_game(search_title, "")
       if game == nil
         puts "NO GAME FOUND"
+
         next
       end
-
-
-
-
-      if row.to_s.include? "Sign up to be notified when this item becomes available."
+      if !get_avaibility(row)
         next
       end
-
-      if row.to_s.include? "Currently unavailable"
-        next
-      end
-
-      price_chunk = row.css(".newPrice").to_s
-
-
-
-      sale_price_start = price_chunk.index("<span>")
-
-      sale_price_end = price_chunk.index("</span>")
-
-      sale_price = price_chunk[sale_price_start+6...sale_price_end]
-
-      original_price = sale_price
-
-      if price_chunk.include? "<strike>"
-        original_price_start = price_chunk.index("<strike>")
-        original_price_end = price_chunk.index("</strike>")
-        original_price = price_chunk[original_price_start+8...original_price_end]
-      end
-
+      prices = parse_price_chunk(row)
+      sale_price = prices[0]
+      original_price = prices[1]
       puts title
       puts original_price
       puts sale_price
       puts "game found!"
       original_price = '%.2f' %  original_price.delete( "$" ).to_f
       sale_price = '%.2f' %  sale_price.delete( "$" ).to_f
+      product_url = parse_url(row)
 
-
-      product_url = row.css(".productTitle").css("a")[0].to_s
-
-      link_start = product_url.index('<a href="')
-      link_end = product_url.index('">')
-
-      product_url = product_url[link_start+9...link_end]
-
-      game_sale = game.game_sales.create!(store: "Amazon", url: product_url, origamt: original_price, saleamt: sale_price, occurrence: DateTime.now)
-      game_sale_history = game.game_sale_histories.create!(store: "Amazon", price: sale_price, occurred: DateTime.now)
+      game_sale = game.game_sales.create!(store: "Amazon", 
+                                          url: product_url, 
+                                          origamt: original_price, 
+                                          saleamt: sale_price,
+                                          occurrence: DateTime.now)
+      game_sale_history = game.game_sale_histories.create!(store: "Amazon",
+                                                           price: sale_price,
+                                                           occurred: DateTime.now)
 
     end
   end

@@ -42,7 +42,7 @@
                 <% else %>    
                     <table>
                     <% @game.get_lowest_sale_per_vendor.each do |sale| %>
-        		        <tr>
+                      <tr id=<%=sale.store.downcase%>>
                             <td>
                                 <a href= "<%=sale.url%>">
                                     <%= image_tag("#{sale.store.downcase}.jpg",{size: "59x35"})%>

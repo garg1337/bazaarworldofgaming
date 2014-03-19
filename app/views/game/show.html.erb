@@ -1,6 +1,6 @@
 <div class = "container">
       <div class = "container-fluid" id="top-cont">
-        <h1 class = "header"><%=@game.title %> <% if @best!=nil %>- $<%= @best.saleamt %><%end%></h1>
+        <h1 class = "header"><%=@game.title %> <% if @best!=nil %>- <%= number_to_currency(@best.saleamt) %><%end%></h1>
         <div class = "row">
         	<div class = "well" id="top">
         		<img style = "height:auto; width:auto; max-width:300px; max-height:300px" src='<%= @game.image_url %>' class = "img-rounded"> <br />
@@ -48,7 +48,7 @@
                                     <%= image_tag("#{sale.store.downcase}.jpg",{size: "59x35"})%>
                                 </a>
                             </td> 
-                            <td><span class = "price">$<%= sale.saleamt %></span></td>
+                            <td><span class = "price"><%= number_to_currency(sale.saleamt) %></span></td>
                         </tr>
                     <% end %>
                     </table>

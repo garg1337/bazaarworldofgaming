@@ -74,7 +74,7 @@ class Game < ActiveRecord::Base
  		results.push(min_gmg_sale)
  	end
 
- 	return results
+ 	return results.sort_by { |sale| [sale.saleamt]}
 
 
  end

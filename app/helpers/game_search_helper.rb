@@ -8,6 +8,15 @@ module GameSearchHelper
   def self.potential_messed_up_words
     [["super heroes", "superheroes"],["civilization", "sid meiers civilization"]]
   end
+
+  def self.roman_numerals
+    [["1","I"],["2","II"],["3","III"],["4","IV"],["5","V"],["6","VI"],["7","VII"],["8","VIII"],["9","IX"],["10","X"],
+     ["11","XI"],["12","XII"],["13","XIII"],["14","XIV"],["15","XV"],["16","XVI"],["17","XVII"],["18","XVIII"],["19","XIX"],["20","XX"]]
+  end
+  
+  def self.character_exceptions
+    ["I","X","V"]
+  end
   def self.find_game(title)
     if(title == "")
       return []
@@ -30,6 +39,7 @@ module GameSearchHelper
 
     return exact_matches | series_matches | partial_matches
   end
+
 
 
   def self.find_and_filter_games(title, user)
@@ -62,7 +72,20 @@ module GameSearchHelper
   end
 
 
+  def self.handle_roman_numeral(words_list)
+    new_words_list = words_list
+    roman_numerals.each do |words|
+      if new_words_list.index(words[0]) != nil
+        index = new_words_list.index(words[0])
+        new_words_list[index] = words[1]
+      elsif new_words_list.index(words[1]) != nil
+        index = new_words_list.index(words[1])
+        new_words_list[index] = words[0]
+      end
+    end
+    return new_words_list
 
+  end
 
 
 

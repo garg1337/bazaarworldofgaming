@@ -27,7 +27,8 @@ module GameSearchHelper
     search_title = StringHelper.create_search_title(title)
     # puts "search_title = " + search_title
     exact_matches = Game.where("search_title LIKE ?", "%" + search_title + "%")
-    
+    title_roman = handle_roman_numeral(search_title)
+    roman_matches = Game.where("search_title LIKE ?", "%" + title_roman + "%")
     series_matches = []
     series_name = handle_colon(title)
     if series_name != nil
@@ -37,7 +38,7 @@ module GameSearchHelper
 
     partial_matches = get_game_lis_partial_match(words_list)
 
-    return exact_matches | series_matches | partial_matches
+    return exact_matches | roman_matches | series_matches | partial_matches
   end
 
 
@@ -83,7 +84,7 @@ module GameSearchHelper
         new_words_list[index] = words[0]
       end
     end
-    return new_words_list.join
+    return new_words_list.join(' ')
 
   end
 
@@ -138,7 +139,7 @@ module GameSearchHelper
         return games_in_db.first
       end
       #romane numerals
-      title_roman = handle_roman_numerals(search_title)
+      title_roman = handle_roman_numeral(search_title)
       games_in_db = Game.where("search_title =?", title_roman)
       if games_in_db.length != 0
         puts "Match Found!: " + title_roman

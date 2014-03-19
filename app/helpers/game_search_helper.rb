@@ -5,26 +5,28 @@ require 'restclient'
 
 
 module GameSearchHelper
-    
+  def self.potential_messed_up_words
+    [["super heroes", "superheroes"],["civilization", "sid meiers civilization"]]
+  end
   def self.find_game(title)
     if(title == "")
       return []
     end
     words_list = title.scan /[[:alnum:]]+/
-    delChar(words_list)
+    del_char(words_list)
 
     search_title = StringHelper.create_search_title(title)
     # puts "search_title = " + search_title
     exact_matches = Game.where("search_title LIKE ?", "%" + search_title + "%")
     
     series_matches = []
-    series_name = handleColon(title)
+    series_name = handle_colon(title)
     if series_name != nil
       series_search_title = StringHelper.create_search_title(series_name)
       series_matches = Game.where("search_title LIKE ?", "%" + series_search_title + "%")
     end
 
-    partial_matches = getGameLisPartialMatch(words_list)
+    partial_matches = get_game_lis_partial_match(words_list)
 
     return exact_matches | series_matches | partial_matches
   end
@@ -64,7 +66,7 @@ module GameSearchHelper
 
 
 
-  def self.getGameLisPartialMatch(words_list)
+  def self.get_game_lis_partial_match(words_list)
     counts = Hash.new(0)
     words_list.each do |word|
       games_found = Game.where("search_title LIKE ?", "%" + word + "%")
@@ -82,7 +84,7 @@ module GameSearchHelper
     return games_list
   end
 
-  def self.handleColon(title)
+  def self.handle_colon(title)
     idx = title.index(':')
     if idx == nil 
       return nil
@@ -91,7 +93,7 @@ module GameSearchHelper
     end
   end  
 
-  def self.delChar(words_list)
+  def self.del_char(words_list)
     words_list.delete_if { |c| c.length < 2}
   end
 
@@ -170,16 +172,20 @@ module GameSearchHelper
     #A SIMILAR CHECK TO are_games_same. IF TIME PERMITS, LOOK INTO REFACTORING THIS COUPLED CHANGE. 
 
     #super heroes as superheroes
-    game = GameSearchHelper.resolve_messed_up_words(search_title_original, "super heroes", "superheroes")
-    if game != nil 
-      return game
+    GameSearchHelper.potenital_messed_up_words.each do |words|
+      game = GameSearchHelper.resolve_messed_up_words(search_title_original, words[0], words[1])
+      if game != nil 
+        return game
+      end
     end
 
     #civilization and sid meier's civilization
-    game = GameSearchHelper.resolve_messed_up_words(search_title_original, "civilization", "sid meiers civilization")
-    if game != nil 
-      return game
-    end
+    #game = GameSearchHelper.resolve_messed_up_words(search_title_original, "civilization", "sid meiers civilization")
+    #if game != nil 
+     # return game
+    #end
+
+  
 
 
 
@@ -249,15 +255,16 @@ module GameSearchHelper
 
     #here we try word differentials
 
+    GameSearchHelper.potential_messed_up_words.each do |words|
       #superheroes
-      if GameSearchHelper.are_titles_same_but_diff_words(first_search_title, second_search_title, "superheroes", "super heroes")
+      if GameSearchHelper.are_titles_same_but_diff_words(first_search_title, second_search_title, words[0], words[1])
         return true
       end
-
+    end
       #civilization and sid meier's civilization
-      if GameSearchHelper.are_titles_same_but_diff_words(first_search_title, second_search_title, "civilization", "sid meiers civilization")
-        return true
-      end
+      #if GameSearchHelper.are_titles_same_but_diff_words(first_search_title, second_search_title, "civilization", "sid meiers civilization")
+      #  return true
+      #end
 
 
       #try others here

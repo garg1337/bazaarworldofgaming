@@ -24,10 +24,25 @@ require 'restclient'
 
 # # TODO: First wipe out the sales database, then run steam, then run gmg, then run amazon
 
+
+
+
 # GameSale.delete_all
 
 
-# #BEGIN RUNNING STEAM
+
+# i = 3286
+
+
+# until i == 6957
+# 	Game.delete(i)
+# 	i = i + 1
+# end
+
+
+
+
+# # #BEGIN RUNNING STEAM
 # i = 1
 
 # until i == 300
@@ -61,14 +76,17 @@ require 'restclient'
 # 	i = i + 1;
 # end
 
-# #END RUNNING STEAM
+# # #END RUNNING STEAM
 
 
 
-#BEGIN RUNNING AMAZON
+# #BEGIN RUNNING AMAZON
+
+AmazonHelper.parse_first_sale_page
 
 AMAZON_STORE_BASE_URL = 'http://www.amazon.com/s?ie=UTF8&page=2&rh=n%3A2445220011'
 
+AmazonHelper.parse_first_sale_page
 
 next_url = AMAZON_STORE_BASE_URL
 
@@ -76,11 +94,11 @@ result = RestClient.get(next_url)
 
 
 
-
+i = 1
 while result != nil
 	result = Nokogiri::HTML(result)
 
-	# File.open("db/test_files/product_url"  +".html", 'w') { |file| file.write(result.to_s) }
+	File.open("db/test_files/product_url" + i.to_s  + ".html", 'w') { |file| file.write(result.to_s) }
 
 	AmazonHelper.parse_products_off_result_page(result)
 
@@ -102,6 +120,8 @@ while result != nil
 	puts next_url
 	puts "\n"
 	result = RestClient.get(next_url)
+
+	i = i+1
 end
 
 

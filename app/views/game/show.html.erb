@@ -41,7 +41,7 @@
                     <%= "No sales data for this game."%>
                 <% else %>    
                     <table>
-                    <% @game.get_lowest_sale_per_vendor.each do |sale| %>
+                    <% @game.game_sales.each do |sale| %>
                       <tr id=<%=sale.store.downcase%>>
                             <td>
                                 <a href= "<%=sale.url%>">

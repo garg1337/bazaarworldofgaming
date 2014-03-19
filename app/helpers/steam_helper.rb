@@ -302,8 +302,23 @@ module SteamHelper
     puts original_price
     puts sale_price
 
-    game_sale = game.game_sales.create!(store: "Steam", url: page_link, origamt: original_price, saleamt: sale_price, occurrence: DateTime.now)
-    game_sale_history = game.game_sale_histories.create!(store: "Steam", price: sale_price, occurred: DateTime.now)
+    steam_sales = game.game_sales.where(["store = ?", "Steam"])
+
+
+    if steam_sales == nil or steam_sales.length == 0
+
+          game_sale = game.game_sales.create!(store: "Steam", 
+                                              url: page_link, 
+                                              origamt: original_price, 
+                                              saleamt: sale_price,
+                                              occurrence: DateTime.now)
+
+
+          game_sale_history = game.game_sale_histories.create!(store: "Steam",
+                                                               price: sale_price,
+                                                               occurred: DateTime.now)
+    end
+
 
 
 

@@ -6,7 +6,7 @@ require 'restclient'
 
 module GameSearchHelper
   def self.potential_messed_up_words
-    [["super heroes", "superheroes"],["civilization", "sid meiers civilization"]]
+    [["super heroes", "superheroes"],["civilization", "sid meiers civilization"], ["standard edition", ""], ["40k", "40000"], ["2","ii"], ["goty", "game of the year"], ["goty", "game of the year edition"] ]
   end
 
   def self.roman_numerals

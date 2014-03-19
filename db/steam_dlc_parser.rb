@@ -41,9 +41,9 @@ until i == 300
 			store_id = row_info_app_string[start_index+2...end_index]
 
 			url = STEAM_STORE_BASE_URL + store_id
-			page = SteamHelper.agePasser(url)
+			page = SteamHelper.age_passer(url)
 			puts url
-			SteamHelper.extractPageInfo(page)
+			SteamHelper.extract_page_info(page)
 
 		end
 	end

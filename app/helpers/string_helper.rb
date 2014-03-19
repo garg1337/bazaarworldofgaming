@@ -7,7 +7,7 @@ require 'restclient'
 module StringHelper
     
   def self.sanitize_title(title)
-      escape_for_space_characters = Regexp.escape('\\+-&|!(){}[]^~*?:&')
+      escape_for_space_characters = Regexp.escape('\\+-&|!(){}[]^~*?:&–')
       escape_for_nothing_characters = Regexp.escape('\',®™.’')
       str = title.gsub(/([#{escape_for_space_characters}])/, ' ')
       str = str.gsub(/([#{escape_for_nothing_characters}])/, '')

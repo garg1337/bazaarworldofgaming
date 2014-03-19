@@ -41,7 +41,7 @@
                     <%= "No sales data for this game."%>
                 <% else %>    
                     <table>
-                    <% @game.game_sales.each do |sale| %>
+                    <% @game.get_lowest_sale_per_vendor.each do |sale| %>
         		        <tr>
                             <td>
                                 <a href= "<%=sale.url%>">
@@ -58,8 +58,14 @@
         </div>
       </div>
       <div class = "well">
+
+            <% if (@game.description != nil and @game.description.include?("Requires the base game")) %>
+                <p>This product is DLC.</p>
+
+            <%else%>
         	  <p><%= @game.description %></p>
-        	</div>
+            <%end%>
+        </div>
      
 	    <button class="btn btn-default">
 	    	Price History

@@ -70,8 +70,10 @@ module AmazonHelper
 
       original_price = '%.2f' %  original_price.delete( "$" ).to_f
       sale_price = '%.2f' %  sale_price.delete( "$" ).to_f
-      game_sale = game.game_sales.create!(store: "Amazon", url: product_url, origamt: original_price, saleamt: sale_price, occurrence: DateTime.now)
-      game_sale_history = game.game_sale_histories.create!(store: "Amazon", price: sale_price, occurred: DateTime.now)
+
+      occurrence = DateTime.now
+      game_sale = game.game_sales.create!(store: "Amazon", url: product_url, origamt: original_price, saleamt: sale_price, occurrence: occurrence)
+      game_sale_history = game.game_sale_histories.create!(store: "Amazon", price: sale_price, occurred: occurrence)
 
 
 

@@ -172,7 +172,7 @@ module GameSearchHelper
     #A SIMILAR CHECK TO are_games_same. IF TIME PERMITS, LOOK INTO REFACTORING THIS COUPLED CHANGE. 
 
     #super heroes as superheroes
-    GameSearchHelper.potenital_messed_up_words.each do |words|
+    GameSearchHelper.potential_messed_up_words.each do |words|
       game = GameSearchHelper.resolve_messed_up_words(search_title_original, words[0], words[1])
       if game != nil 
         return game

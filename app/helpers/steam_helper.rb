@@ -8,7 +8,7 @@ module SteamHelper
     
 
 
-  def self.agePasser(product_url)
+  def self.age_passer(product_url)
     shiny = RestClient.post(product_url, {'ageDay'=>'18', 'ageMonth'=>'February', 'ageYear'=>'1968'}){ 
       |response, request, result, &block|
       if [301, 302, 307].include? response.code
@@ -21,7 +21,7 @@ module SteamHelper
   end
 
 
-  def self.getTitle(page)
+  def self.get_title(page)
 
     #game title
     game_title = page.at_xpath('//*[@id="main_content"]/div[1]/div[2]/div/div[3]').to_s
@@ -36,7 +36,7 @@ module SteamHelper
     return game_title
   end
 
-  def self.getDescription(page)
+  def self.get_description(page)
     game_description = page.at_xpath('//*[@id="game_highlights"]/div[2]/div/div[2]').to_s
     game_description = game_description[38...game_description.length - 6]
     # if game_description.include? "Requires the base game"
@@ -57,7 +57,7 @@ module SteamHelper
 
   end
 
-  def self.getGenres(page)
+  def self.get_genres(page)
     page_string = page.to_s
 
     #obtain genres
@@ -89,7 +89,7 @@ module SteamHelper
   end
 
 
-  def self.getDeveloper(page)
+  def self.get_developer(page)
     page_string = page.to_s
     developer = "N/A"
     developer_start = page_string.index("<b>Developer:</b>")
@@ -105,7 +105,7 @@ module SteamHelper
     return developer
   end
 
-  def self.getPublisher(page)
+  def self.get_publisher(page)
     page_string = page.to_s
     publisher = "N/A"
     publisher_start = page_string.index("<b>Publisher:</b>")
@@ -121,7 +121,7 @@ module SteamHelper
     return publisher    
   end
 
-  def self.getReleaseDate(page)
+  def self.get_release_date(page)
     page_string = page.to_s
     release_date = "N/A"
     release_start = page_string.index("<b>Release Date:</b>")
@@ -138,7 +138,7 @@ module SteamHelper
     return release_date    
   end
 
-  def self.getPricing(page)
+  def self.get_pricing(page)
     price_chunk = page.css(".game_purchase_action")[0]
 
     if price_chunk == nil
@@ -192,7 +192,7 @@ module SteamHelper
   end
 
 
-  def self.getBoxArt(page)
+  def self.get_box_art(page)
     box_art_chunk = page.css(".game_header_image").to_s
     box_art_start = box_art_chunk.index('src="')
     box_art_end = box_art_chunk.index('">')
@@ -203,40 +203,40 @@ module SteamHelper
 
 
 
-  def self.extractPageInfo(page_link)
-    page = SteamHelper.agePasser(page_link)
+  def self.extract_page_info(page_link)
+    page = SteamHelper.age_passer(page_link)
     puts page_link
 
     #game title
-    game_title = SteamHelper.getTitle(page)
+    game_title = SteamHelper.get_title(page)
 
     if(game_title == nil)
       return
     end
 
     #game description
-    game_description = SteamHelper.getDescription(page)
+    game_description = SteamHelper.get_description(page)
 
     #obtain genres
-    genres = SteamHelper.getGenres(page)
+    genres = SteamHelper.get_genres(page)
 
 
     #developer
-    developer = SteamHelper.getDeveloper(page)
+    developer = SteamHelper.get_developer(page)
 
 
     #publisher
-    publisher = SteamHelper.getPublisher(page)
+    publisher = SteamHelper.get_publisher(page)
 
     #release date
-    release_date = SteamHelper.getReleaseDate(page)
+    release_date = SteamHelper.get_release_date(page)
 
 
     #boxart
-    box_art_url = SteamHelper.getBoxArt(page)
+    box_art_url = SteamHelper.get_box_art(page)
 
     #pricing
-    price_arr = SteamHelper.getPricing(page)
+    price_arr = SteamHelper.get_pricing(page)
     original_price = price_arr[0]
     sale_price = price_arr[1]
 

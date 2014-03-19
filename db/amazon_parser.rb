@@ -24,7 +24,7 @@ while result != nil
 	next_url = next_url_chunk[next_url_start+9...next_url_end]
 	next_url_chunks = next_url.split("&amp;")
 	next_url = "";
-	next_url_cghunks.each do |url_chunk|
+	next_url_chunks.each do |url_chunk|
 		next_url = next_url + "&" + url_chunk
 	end
 	next_url = next_url[1...next_url.length]

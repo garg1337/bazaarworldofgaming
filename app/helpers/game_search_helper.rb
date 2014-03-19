@@ -72,8 +72,8 @@ module GameSearchHelper
   end
 
 
-  def self.handle_roman_numeral(words_list)
-    new_words_list = words_list
+  def self.handle_roman_numeral(title)
+    new_words_list = title.scan /[[:alnum:]]+/
     roman_numerals.each do |words|
       if new_words_list.index(words[0]) != nil
         index = new_words_list.index(words[0])
@@ -83,7 +83,7 @@ module GameSearchHelper
         new_words_list[index] = words[0]
       end
     end
-    return new_words_list
+    return new_words_list.join
 
   end
 
@@ -121,7 +121,7 @@ module GameSearchHelper
   end
 
 
-
+ 
 
   def self.find_right_game(title, description)
 
@@ -134,6 +134,14 @@ module GameSearchHelper
       games_in_db = Game.where("description =?", description)
 
       if games_in_db.length != 0
+        puts "Match Found!: " + search_title
+        return games_in_db.first
+      end
+      #romane numerals
+      title_roman = handle_roman_numerals(search_title)
+      games_in_db = Game.where("search_title =?", title_roman)
+      if games_in_db.length != 0
+        puts "Match Found!: " + title_roman
         return games_in_db.first
       end
 

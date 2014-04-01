@@ -249,12 +249,48 @@ module GameSearchHelper
 
 
   def self.are_titles_same_but_diff_words(first_search_title, second_search_title, word1, word2)
+    # if first_search_title.include? word1 and second_search_title.include? word2
+    #   return true
+    # end
+    # if first_search_title.include? word2 and second_search_title.include? word1
+    #   return true
+    # end
+
     if first_search_title.include? word1 and second_search_title.include? word2
-      return true
+      ss = first_search_title.gsub(word1, word2)
+      games_in_db = Game.where("search_title =?", ss)
+
+      if games_in_db.length != 0
+        return true
+      end
+
+      ss = second_search_title.gsub(word2, word1)
+      games_in_db = Game.where("search_title =?", ss)
+
+      if games_in_db.length != 0
+        return true
+      end
+
     end
+
+
     if first_search_title.include? word2 and second_search_title.include? word1
-      return true
+      ss = first_search_title.gsub(word2, word1)
+      games_in_db = Game.where("search_title =?", ss)
+
+      if games_in_db.length != 0
+        return true
+      end
+
+      ss = second_search_title.gsub(word1, word2)
+      games_in_db = Game.where("search_title =?", ss)
+
+      if games_in_db.length != 0
+        return true
+      end
+
     end
+
 
   end
 

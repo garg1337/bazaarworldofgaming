@@ -24,6 +24,11 @@ module AmazonHelper
       title_start = title_chunk.index('">')
       title_end = title_chunk.index("[")
 
+      if title_start == nil
+        puts("CAN'T FIND ANYTHING!!!?!")
+        next
+      end
+
       title = title_chunk[title_start+2...title_end]
 
       search_title = StringHelper.create_search_title(title)

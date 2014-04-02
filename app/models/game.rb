@@ -7,16 +7,27 @@ class Game < ActiveRecord::Base
 
   has_many :game_sales, dependent: :destroy
   has_many :game_sale_histories, dependent: :destroy
+  has_many :alerts, dependent: :destroy
 
 
 
 
 
+def get_lowest_sale
+	min_sale = nil
+	game_sales.each do |sale|
+		saleamt = sale.saleamt.to_f
+		if min_sale == nil or min_sale.saleamt.to_f > saleamt.to_f
+			min_sale = sale
+		end
+	end
+
+	return min_sale
+end
 
 
 
-
- def get_lowest_sale_per_vendor
+def get_lowest_sale_per_vendor
 
  	results = []
 
@@ -32,7 +43,7 @@ class Game < ActiveRecord::Base
  			min_steam_sale = sale
  		end
 
- 	end
+end
 
 
  	amazon_sales = game_sales.where(["store = ?", "Amazon"])
